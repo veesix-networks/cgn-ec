@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "cgn-ec"
+version = "0.1.0"
+description = "CGN Event Correlation for ISPs"
+authors = ["BSpendlove <8687668+BSpendlove@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "^2.10.4"
+kafka-python-ng = "^2.2.3"
+pydantic-settings = "^2.7.0"
+influxdb = "^5.3.2"
+structlog = "^24.4.0"
+psycopg2-binary = "^2.9.10"
+sqlalchemy = "^2.0.36"
+sqlmodel = "^0.0.22"
+fastapi = "^0.115.6"
+sqlalchemy-timescaledb = "^0.4.1"
+uvicorn = "^0.34.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
