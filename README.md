@@ -17,7 +17,7 @@ Here are some key features of this project:
 
 ![Architecture Overview](docs/img/veesix_networks_cgn_logging.png)
 
-## Professional Edition
+## Pro Edition
 
 We provide support/services for this project which include maintaining the solution on-prem or via AWS and also can add new vendors/outputs if you need something developed quick.
 
