@@ -1,0 +1,57 @@
+site_name: veesix ::networks - cgn-ec
+site_url: https://docs.veesix-networks.co.uk/cgn-ec
+logo: img/logo.png
+theme:
+  name: material
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+      primary: custom
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default 
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+      primary: custom
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+      primary: custom
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.sections
+extra_css:
+  - stylesheets/extra.css
+nav:
+  - Get Started: 
+    - Intro: index.md
+    - Recommended Configuration: recommended_setup.md
+  - Architecture:
+    - General Design: architecture/general_design.md
+    - Extra Diagrams: architecture/further_look.md
+    - Collectors (Producers): architecture/collectors.md
+    - Consumers: architecture/consumers.md
+    - Handlers: architecture/handlers.md
+    - Outputs: architecture/outputs.md
+    - Kafka: architecture/message_queue.md
+    - TimescaleDB Models: architecture/timescale_models.md
+  - API: api/index.md
+  - Contributing:
+    - PLEASE READ FIRST: contributing/please_read_first.md
+    - Coding Style: contributing/coding_style.md
+    - Tests: contributing/tests.md
+  - FAQ: faq.md
+  - Author: https://github.com/BSpendlove
+markdown_extensions:
+  - admonition
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
