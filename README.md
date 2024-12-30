@@ -23,10 +23,10 @@ We provide support/services for this project which include maintaining the solut
 
 Features included in Pro edition:
 
-- :heavy_check_mark: HA/Scaleout with NetFlow collector.
-- :heavy_check_mark: API Advanced Search
-- :heavy_check_mark: Cache of all active subscriber sessions
-- :heavy_check_mark: OSS/CRM Integration
+:white_check_mark: HA/Scaleout with NetFlow collector.
+:white_check_mark: API Advanced Search
+:white_check_mark: Cache of all active subscriber sessions
+:white_check_mark: OSS/CRM Integration
 
 If you would like a quote then please email us at [cgn-support@veesix-networks.co.uk](mailto:cgn-support@veesix-networks.co.uk).
 
