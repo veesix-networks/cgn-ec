@@ -1,74 +1,39 @@
-# cgn-ec
-CGN Event Correlation
+<div style="display: flex; justify-content: center; align-items: center; height: 20vh;">
+  <img src="docs/img/logo.png" alt="Logo" style="max-width: 100%; height: auto;">
+</div>
 
-This project is currently a work in progress and will be subject to change core components throughout the next few months.
+---
+
+<a href="https://github.com/veesix-networks/cgn-ec" target="_blank">cgn-ec</a> (Event Correlation) is a super fast and flexible solution which focuses on centralizing CGNAT logging. You can view the [documentation here](https://docs.cgn-ec.veesix-networks.co.uk) and also join the [Slack](https://join.slack.com/t/cgn-ec/shared_invite/zt-2wvt40sc7-h5l3VWjYkAiZsm3uoicXww) community.
+
+Here are some key features of this project:
+
+- Flexible scaling with decoupled compute vs storage requirements.
+- Up to <em>*</em>90% data compression compared to other DIY solutions.
+- Up to <em>*</em>1000x faster than other enterprise solutions.
+- Ability to add a new vendor within minutes.
+- Flexible outputs so you can preprocess CGNAT events and ship to external systems.
+- Syslog and NetFlow collectors with multi-vendor support out of the box.
 
 ![Architecture Overview](docs/img/veesix_networks_cgn_logging.png)
 
-With this project, I aim to consolidate various methods of collecting CGNAT logs and build the architecture in a way to scale on both the ingestor side and the consumers who will process the data and pass it into external systems like an analysis tool or time-series database. The idea is that you can also enrich the data with some metadata about the CGN subscriber whether that be things like a prefix id, site id or role from your IPAM like netbox to provide quick and reliable reporting on your CGN subscribers.
+## Professional Edition
 
-TimescaleDB was initially chosen to explore the capabilities of running time series in PostgreSQL because the infrastructure can be consolidated alongside with Django/NetBox applications for my initial demos.
+We provide support/services for this project which include maintaining the solution on-prem or via AWS and also can add new vendors/outputs if you need something developed quick.
 
-If you are interested in funding this project or obtaining a support contract which will allow me to develop this further and provide better support with proper SLAs, then please do reach out to me via [Veesix ::networks](https://veesix-networks.co.uk) or contact me at support[at]veesix-networks.co.uk.
+Features included in Pro edition:
 
-```
-$ curl --location 'http://localhost:8000/v1/sessions/?x_ip=194.15.97.34&x_port=39940&timestamp_gt=2024-12-29T01%3A29%3A33Z' | jq
-[
-  {
-    "timestamp": "2024-12-29T01:30:33Z",
-    "event": "A",
-    "protocol": 17,
-    "src_port": 50710,
-    "x_ip": "194.15.97.34",
-    "dst_port": 443,
-    "vrf_id": 5,
-    "src_ip": "100.64.23.122",
-    "x_port": 39940,
-    "dst_ip": "173.184.60.34",
-    "direction": "OUT"
-  }
-]
-$ curl --location 'http://localhost:8000/v1/sessions/?x_ip=194.15.97.34&timestamp_gt=2024-12-29T01%3A29%3A33Z' | jq
-[
-  {
-    "timestamp": "2024-12-29T01:30:28Z",
-    "event": "A",
-    "protocol": 6,
-    "src_port": 61648,
-    "x_ip": "194.15.97.34",
-    "dst_port": 443,
-    "vrf_id": 0,
-    "src_ip": "100.64.23.122",
-    "x_port": 51562,
-    "dst_ip": "8.205.3.117",
-    "direction": "OUT"
-  },
-  {
-    "timestamp": "2024-12-29T01:30:28Z",
-    "event": "D",
-    "protocol": 6,
-    "src_port": 46220,
-    "x_ip": "194.15.97.34",
-    "dst_port": 443,
-    "vrf_id": 0,
-    "src_ip": "100.64.23.122",
-    "x_port": 19174,
-    "dst_ip": "181.48.102.136",
-    "direction": "OUT"
-  },
-  {
-    "timestamp": "2024-12-29T01:30:28Z",
-    "event": "D",
-    "protocol": 17,
-    "src_port": 15181,
-    "x_ip": "194.15.97.34",
-    "dst_port": 443,
-    "vrf_id": 5,
-    "src_ip": "100.64.23.122",
-    "x_port": 46001,
-    "dst_ip": "71.153.149.89",
-    "direction": "OUT"
-  },
-  ...
-]
-```
+- :heavy_check_mark: HA/Scaleout with NetFlow collector.
+- :heavy_check_mark: API Advanced Search
+- :heavy_check_mark: Cache of all active subscriber sessions
+- :heavy_check_mark: OSS/CRM Integration
+
+If you would like a quote then please email us at [cgn-support@veesix-networks.co.uk](mailto:cgn-support@veesix-networks.co.uk).
+
+## License
+
+This project is licensed under <a href="https://github.com/veesix-networks/cgn-ec/blob/main/LICENSE" target="_blank">Apache License Version 2.0</a>.
+
+### Disclaimers
+
+<em>*</em> When using TimescaleDB output as a time-series database, you can view the [blog regarding performance here regarding the x1000 faster](https://www.timescale.com/blog/timescaledb-vs-amazon-timestream-6000x-higher-inserts-175x-faster-queries-220x-cheaper) and the data compression up [to 90% here](https://docs.timescale.com/use-timescale/latest/compression/about-compression/).
