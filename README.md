@@ -1,6 +1,6 @@
-<div style="display: flex; justify-content: center; align-items: center; height: 20vh;">
+<p align="center">
   <img src="docs/img/logo.png" alt="Logo" style="max-width: 100%; height: auto;">
-</div>
+</p>
 
 ---
 
