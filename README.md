@@ -31,6 +31,8 @@ Features included in Pro edition:
 
 :white_check_mark: OSS/CRM Integration
 
+:white_check_mark: SLA for support
+
 If you would like a quote then please email us at [cgn-support@veesix-networks.co.uk](mailto:cgn-support@veesix-networks.co.uk).
 
 ## License
