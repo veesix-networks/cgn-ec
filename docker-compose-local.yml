@@ -64,7 +64,6 @@ services:
     image: timescale/timescaledb:2.17.2-pg17
     volumes:
       - ${PWD}/database:/var/lib/postgresql/data
-      - ${PWD}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
     environment:
