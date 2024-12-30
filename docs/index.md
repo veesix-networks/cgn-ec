@@ -1,6 +1,6 @@
 #
 <p align="center">
-  <img src="docs/img/logo.png" alt="Logo" style="max-width: 100%; height: auto;">
+  <img src="img/logo.png" alt="Logo" style="max-width: 100%; height: auto;">
 </p>
 
 <a href="https://github.com/veesix-networks/cgn-ec" target="_blank">cgn-ec</a> (Event Correlation) is a super fast and flexible solution which focuses on centralizing CGNAT logging. You can view the [documentation here](https://docs.cgn-ec.veesix-networks.co.uk) and also join the [Slack](https://join.slack.com/t/cgn-ec/shared_invite/zt-2wvt40sc7-h5l3VWjYkAiZsm3uoicXww) community.
@@ -8,13 +8,13 @@
 Here are some key features of this project:
 
 - Flexible scaling with decoupled compute vs storage requirements.
-- Up to 90% data compression compared to other DIY solutions.
+- Up to <em>*</em>90% data compression compared to other DIY solutions.
 - Up to <em>*</em>1000x faster than other enterprise solutions.
 - Ability to add a new vendor within minutes.
 - Flexible outputs so you can preprocess CGNAT events and ship to external systems.
 - Syslog and NetFlow collectors with multi-vendor support out of the box.
 
-![Basic Architecture](./img/veesix_networks_cgn_logging.png)
+![Basic Architecture](img/veesix_networks_cgn_logging.png)
 
 ## Professional Edition
 
@@ -26,6 +26,7 @@ Features included in Pro edition:
 - [x] API Advanced Search
 - [x] Cache of all active subscriber sessions
 - [x] OSS/CRM Integration
+- [x] SLA for support
 
 If you would like a quote then please email us at [cgn-support@veesix-networks.co.uk](mailto:cgn-support@veesix-networks.co.uk).
 
@@ -35,4 +36,4 @@ This project is licensed under <a href="https://github.com/veesix-networks/cgn-e
 
 ### Disclaimers
 
-<em>*</em> When using TimescaleDB output as a time-series database, you can view the [blog regarding performance here](https://www.timescale.com/blog/timescaledb-vs-amazon-timestream-6000x-higher-inserts-175x-faster-queries-220x-cheaper).
+<em>*</em> When using TimescaleDB output as a time-series database, you can view the [blog regarding performance here regarding the x1000 faster](https://www.timescale.com/blog/timescaledb-vs-amazon-timestream-6000x-higher-inserts-175x-faster-queries-220x-cheaper) and the data compression up [to 90% here](https://docs.timescale.com/use-timescale/latest/compression/about-compression/).
