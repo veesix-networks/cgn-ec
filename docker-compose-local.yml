@@ -8,7 +8,7 @@ services:
       - kafka
     volumes:
       - "${PWD}/producer/syslog/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf"
-      - "${PWD}/producer/syslog/conf.d:/etc/syslog-ng/conf.d"
+      - "${PWD}/producer/syslog/conf.d:/etc/syslog-ng/cgn-ec.conf.d"
 
   netflow_collector:
     image: pmacct/nfacctd:bleeding-edge
@@ -36,7 +36,7 @@ services:
       KAFKA_CFG_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT'
       KAFKA_CFG_LISTENERS: 'INTERNAL://:9092,CONTROLLER://:9093,EXTERNAL://:9094'
-      KAFKA_CFG_ADVERTISED_LISTENERS: 'INTERNAL://kafka:9092,EXTERNAL://localhost:9094'
+      KAFKA_CFG_ADVERTISED_LISTENERS: 'INTERNAL://kafka:9092,EXTERNAL://kafka:9094'
       KAFKA_CFG_INTER_BROKER_LISTENER_NAME: 'INTERNAL'
       KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: '1@kafka:9093'
       KAFKA_CFG_PROCESS_ROLES: 'broker,controller'
@@ -68,14 +68,65 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_USER: timescaledb
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: cgnat
+      POSTGRES_PASSWORD: password123
+    networks:
+      - cgn_ec
 
-  # api: {}
+  consumer:
+    build:
+      context: .
+      dockerfile: dockerfiles/consumer.Dockerfile
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:9094"
+      KAFKA_MAX_RECORDS_POLL: 1000
+    networks:
+      - kafka
+      - cgn_ec
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    networks:
+      - cgn_ec
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prom_data:/prometheus
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    networks:
+      - cgn_ec
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+
+  kafka-exporter:
+    image: bitnami/kafka-exporter:latest
+    command:
+      - --kafka.server=kafka:9092
+    networks:
+      - kafka
+      - cgn_ec
 
 volumes:
   kafka_data:
     driver: local
+  prom_data:
 
 networks:
   kafka: {}
+  cgn_ec: {}

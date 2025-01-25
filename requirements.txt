@@ -1,1 +1,2 @@
 mkdocs-material==9.5.49
+mkdocs-redoc-tag==0.1.0
