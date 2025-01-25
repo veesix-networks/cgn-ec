@@ -28,6 +28,7 @@ theme:
     - navigation.instant
     - navigation.tabs
     - navigation.sections
+    - content.code.copy
 extra_css:
   - stylesheets/extra.css
 nav:
@@ -48,10 +49,21 @@ nav:
     - PLEASE READ FIRST: contributing/please_read_first.md
     - Coding Style: contributing/coding_style.md
     - Tests: contributing/tests.md
-  - FAQ: faq.md
   - Author: https://github.com/BSpendlove
 markdown_extensions:
+  - tables
   - admonition
   - def_list
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.tasklist:
       custom_checkbox: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

@@ -1,0 +1,165 @@
+services:
+  syslog_collector:
+    image: balabit/syslog-ng:4.8.0
+    restart: "unless-stopped"
+    ports:
+      - "1514:1514/udp"
+    networks:
+      - kafka
+    volumes:
+      - "${PWD}/producer/syslog/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf"
+      - "${PWD}/producer/syslog/conf.d:/etc/syslog-ng/cgn-ec.conf.d"
+
+  netflow_collector:
+    image: pmacct/nfacctd:bleeding-edge
+    restart: "unless-stopped"
+    init: true
+    ports:
+      - "9995:9995/udp"
+    networks:
+      - kafka
+    volumes:
+      - ${PWD}/producer/netflow/nfacctd.conf:/etc/pmacct/nfacctd.conf:ro
+      - ${PWD}/producer/netflow/data:/root/data
+    profiles: [netflow]
+
+  kafka:
+    image: docker.io/bitnami/kafka:3.9
+    restart: "unless-stopped"
+    ports:
+      - "9094:9094"
+    volumes:
+      - "kafka_data:/bitnami"
+    networks:
+      - kafka
+    environment:
+      KAFKA_CFG_NODE_ID: 1
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT'
+      KAFKA_CFG_LISTENERS: 'INTERNAL://:9092,CONTROLLER://:9093,EXTERNAL://:9094'
+      KAFKA_CFG_ADVERTISED_LISTENERS: 'INTERNAL://kafka:9092,EXTERNAL://kafka:9094'
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: 'INTERNAL'
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: '1@kafka:9093'
+      KAFKA_CFG_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CFG_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_KRAFT_CLUSTER_ID: 'fiWo7IWazngRchmPES6qcA=='
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      BITNAMI_DEBUG: 'true'
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:master
+    restart: "unless-stopped"
+    ports:
+      - 8080:8080
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    networks:
+      - kafka
+
+  consumer:
+    build:
+      context: .
+      dockerfile: dockerfiles/consumer.Dockerfile
+    restart: "unless-stopped"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:9094"
+      KAFKA_MAX_RECORDS_POLL: 30000
+    networks:
+      - kafka
+      - cgn_ec
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    networks:
+      - cgn_ec
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prom_data:/prometheus
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    networks:
+      - cgn_ec
+    env_file:
+      - .env
+    volumes:
+      - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+
+  kafka-exporter:
+    image: bitnami/kafka-exporter:latest
+    command:
+      - --kafka.server=kafka:9092
+    networks:
+      - kafka
+      - cgn_ec
+
+  api:
+    build:
+      context: .
+      dockerfile: dockerfiles/api.Dockerfile
+    restart: "unless-stopped"
+    networks:
+      - caddy
+    env_file:
+      - .env
+    labels:
+      caddy: ${DOMAIN_NAME:-cgn-ec}
+      caddy.reverse_proxy: "{{upstreams 80}}"
+      caddy.tls: "internal"
+
+  caddy:
+    image: lucaslorentz/caddy-docker-proxy:ci-alpine
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - CADDY_INGRESS_NETWORKS=caddy
+    networks:
+      - caddy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy_data:/data
+    restart: unless-stopped
+
+  db:
+    image: timescale/timescaledb:2.17.2-pg17
+    volumes:
+      - ${PWD}/database:/var/lib/postgresql/data
+      - ${PWD}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: cgnat
+      POSTGRES_PASSWORD: password123
+    networks:
+      - cgn_ec
+    restart: unless-stopped
+
+volumes:
+  kafka_data:
+    driver: local
+  prom_data: {}
+  caddy_data: {}
+
+networks:
+  kafka: {}
+  cgn_ec: {}
+  caddy:
+    external: true

@@ -8,16 +8,41 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 pydantic = "^2.10.4"
-kafka-python-ng = "^2.2.3"
 pydantic-settings = "^2.7.0"
 influxdb = "^5.3.2"
-structlog = "^24.4.0"
-psycopg2-binary = "^2.9.10"
+structlog = "^25.1.0"
 sqlalchemy = "^2.0.36"
 sqlmodel = "^0.0.22"
 fastapi = "^0.115.6"
 sqlalchemy-timescaledb = "^0.4.1"
 uvicorn = "^0.34.0"
+regex = "^2024.11.6"
+psycopg = {extras = ["binary"], version = "^3.2.3"}
+confluent-kafka = "^2.7.0"
+jinja2 = "^3.1.5"
+
+
+[tool.poetry.group.consumer.dependencies]
+pydantic = "^2.10.4"
+pydantic-settings = "^2.7.1"
+sqlmodel = "^0.0.22"
+sqlalchemy = "^2.0.36"
+sqlalchemy-timescaledb = "^0.4.1"
+requests = "^2.32.3"
+regex = "^2024.11.6"
+psycopg = {extras = ["binary"], version = "^3.2.3"}
+confluent-kafka = "^2.7.0"
+structlog = "^25.1.0"
+
+
+[tool.poetry.group.api.dependencies]
+fastapi = "^0.115.6"
+pydantic = "^2.10.5"
+pydantic-settings = "^2.7.1"
+psycopg = {extras = ["binary"], version = "^3.2.4"}
+sqlmodel = "^0.0.22"
+uvicorn = "^0.34.0"
+structlog = "^25.1.0"
 
 
 [build-system]
