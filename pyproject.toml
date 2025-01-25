@@ -45,6 +45,11 @@ uvicorn = "^0.34.0"
 structlog = "^25.1.0"
 
 
+
+[tool.poetry.group.mkdocs.dependencies]
+mkdocs-redoc-tag = "^0.1.0"
+mkdocs-material = "^9.5.50"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

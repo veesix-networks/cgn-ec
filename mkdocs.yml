@@ -1,6 +1,8 @@
 site_name: veesix ::networks - cgn-ec
 site_url: https://docs.veesix-networks.co.uk/cgn-ec
 logo: img/logo.png
+plugins:
+  - redoc-tag
 theme:
   name: material
   palette:
