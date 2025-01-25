@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/logo.png" alt="Logo" style="max-width: 100%; height: auto;">
+  <img src="docs/img/logo.png" alt="Logo" style="max-width: 100%; height: auto;">
 </p>
 
 <a href="https://github.com/veesix-networks/cgn-ec" target="_blank">cgn-ec</a> (Event Correlation) is a super fast and flexible solution which focuses on centralizing CGNAT logging. You can view the [documentation here](https://docs.cgn-ec.veesix-networks.co.uk) and also join the [Slack](https://join.slack.com/t/cgn-ec/shared_invite/zt-2wvt40sc7-h5l3VWjYkAiZsm3uoicXww) community.
