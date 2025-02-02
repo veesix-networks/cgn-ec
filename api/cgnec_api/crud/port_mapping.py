@@ -6,7 +6,7 @@ from cgnec_api.models import NATPortMapping
 
 
 class CRUDPortMapping(CRUDBase[NATPortMapping, None, None]):
-    def get_by_x_ip_and_port(
+    async def get_by_x_ip_and_port(
         self,
         db: Session,
         timestamp_lt: datetime,
@@ -28,7 +28,7 @@ class CRUDPortMapping(CRUDBase[NATPortMapping, None, None]):
             filters.append(NATPortMapping.x_port == x_port)
 
         query = select(NATPortMapping).where(*filters).limit(limit).offset(skip)
-        results = db.exec(query)
+        results = await db.exec(query)
 
         return results.all()
 

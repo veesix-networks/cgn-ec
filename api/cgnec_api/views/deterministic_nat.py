@@ -12,7 +12,7 @@ router = APIRouter()
 
 
 @router.get("/", response_model=list[NATSessionMapping])
-def get_deterministic_nat_mapping(
+async def get_deterministic_nat_mapping(
     db: DatabaseDep,
     x_ip: str = None,
     x_port: int = None,
