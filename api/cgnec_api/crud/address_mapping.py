@@ -6,7 +6,7 @@ from cgnec_api.models import NATAddressMapping
 
 
 class CRUDAddressMapping(CRUDBase[NATAddressMapping, None, None]):
-    def get_by_x_ip(
+    async def get_by_x_ip(
         self,
         db: Session,
         timestamp_lt: datetime,
@@ -24,7 +24,7 @@ class CRUDAddressMapping(CRUDBase[NATAddressMapping, None, None]):
             filters.append(NATAddressMapping.x_ip == x_ip)
 
         query = select(NATAddressMapping).where(*filters).limit(limit).offset(skip)
-        results = db.exec(query)
+        results = await db.exec(query)
 
         return results.all()
 

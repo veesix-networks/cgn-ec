@@ -12,7 +12,7 @@ router = APIRouter()
 
 
 @router.get("/", response_model=list[NATAddressMapping])
-def get_address_mappings(
+async def get_address_mappings(
     db: DatabaseDep,
     x_ip: str = None,
     timestamp_gt: datetime = None,
@@ -39,7 +39,7 @@ def get_address_mappings(
             status_code=400, detail="timestamp_lt must be greater than timestamp_gt."
         )
 
-    results = crud.address_mapping.get_by_x_ip(
+    results = await crud.address_mapping.get_by_x_ip(
         db, timestamp_lt, timestamp_gt, x_ip, limit, skip
     )
 

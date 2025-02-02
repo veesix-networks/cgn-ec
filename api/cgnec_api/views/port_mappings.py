@@ -12,7 +12,7 @@ router = APIRouter()
 
 
 @router.get("/", response_model=list[NATPortMapping])
-def get_port_mappings(
+async def get_port_mappings(
     db: DatabaseDep,
     x_ip: str = None,
     x_port: int = None,
@@ -40,7 +40,7 @@ def get_port_mappings(
             status_code=400, detail="timestamp_lt must be greater than timestamp_gt."
         )
 
-    results = crud.port_mapping.get_by_x_ip_and_port(
+    results = await crud.port_mapping.get_by_x_ip_and_port(
         db, timestamp_lt, timestamp_gt, x_ip, x_port, limit, skip
     )
 
