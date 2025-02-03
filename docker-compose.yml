@@ -51,8 +51,6 @@ services:
   kafka-ui:
     image: provectuslabs/kafka-ui:master
     restart: "unless-stopped"
-    ports:
-      - 8080:8080
     depends_on:
       - kafka
     environment:
@@ -60,6 +58,9 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
     networks:
       - kafka
+    labels:
+      caddy: ${DOMAIN_NAME_KAFKA_UI:-cgn-ec-kafka-ui}
+      caddy.reverse_proxy: "{{upstreams 8080}}"
 
   consumer:
     build:
@@ -90,11 +91,12 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
-    ports:
-      - 3000:3000
     restart: unless-stopped
     networks:
       - cgn_ec
+    labels:
+      caddy: ${DOMAIN_NAME_GRAFANA:-cgn-ec-grafana}
+      caddy.reverse_proxy: "{{upstreams 3000}}"
     env_file:
       - .env
     volumes:
@@ -120,9 +122,9 @@ services:
     env_file:
       - .env
     labels:
-      caddy: ${DOMAIN_NAME:-cgn-ec}
+      caddy: ${DOMAIN_NAME_API:-cgn-ec}
       caddy.reverse_proxy: "{{upstreams 80}}"
-      caddy.tls: "internal"
+      #caddy.tls: "internal"
 
   caddy:
     image: lucaslorentz/caddy-docker-proxy:ci-alpine
@@ -151,6 +153,7 @@ services:
     networks:
       - cgn_ec
     restart: unless-stopped
+    profiles: [db]
 
 volumes:
   kafka_data:
