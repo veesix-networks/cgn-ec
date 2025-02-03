@@ -14,6 +14,8 @@ class CRUDSessionMapping(CRUDBase[NATSessionMapping, None, None]):
         timestamp_gt: datetime,
         x_ip: str = None,
         x_port: int = None,
+        dst_ip: str = None,
+        dst_port: int = None,
         limit: int = 100,
         skip: int = 0,
     ) -> list[NATSessionMapping]:
@@ -27,6 +29,12 @@ class CRUDSessionMapping(CRUDBase[NATSessionMapping, None, None]):
 
         if x_port is not None:
             filters.append(NATSessionMapping.x_port == int(x_port))
+
+        if dst_ip is not None:
+            filters.append(NATSessionMapping.dst_ip == IPv4Address(dst_ip))
+
+        if dst_port is not None:
+            filters.append(NATSessionMapping.dst_port == int(dst_port))
 
         query = select(NATSessionMapping).where(*filters).limit(limit).offset(skip)
         results = await db.exec(query)
