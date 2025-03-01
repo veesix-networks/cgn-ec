@@ -7,9 +7,11 @@ from cgnec_api.views import port_block_mappings  # noqa: E402
 from cgnec_api.views import port_mappings  # noqa: E402
 from cgnec_api.views import session_mappings  # noqa: E402
 from cgnec_api.views import deterministic_nat  # noqa: E402
+from cgnec_api.views import admin  # noqa: E402
 
 api_router.include_router(address_mappings.router, prefix="/address_mappings")
 api_router.include_router(port_block_mappings.router, prefix="/port_block_mappings")
 api_router.include_router(port_mappings.router, prefix="/port_mappings")
 api_router.include_router(session_mappings.router, prefix="/session_mappings")
 api_router.include_router(deterministic_nat.router, prefix="/deterministic_nat")
+api_router.include_router(admin.router, prefix="/admin")

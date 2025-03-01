@@ -1,7 +1,5 @@
 Here are our recommendations for production to run cgn-ec.
 
-## Hardware Requirements
-
 - Separate PostGRES database with multi-core, lots of memory and SSDs.
 - Docker or Kubernetes infrastructure to scale the collectors and consumers.
 - Dedicated CPU cores (more cores is better for the consumers/data processors).

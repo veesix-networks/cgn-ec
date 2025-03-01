@@ -56,7 +56,7 @@ If you would like a quote then please email us at [cgn-support@veesix-networks.c
 
 | Vendor      | Full / Partial | Syslog  | NetFlow | RADIUS |
 | ----------- | ----- | ------------------------------------ | ---- | ---- |
-| NFWare       | Full | :white_check_mark: | :white_check_mark: | *:white_check_mark: | 
+| NFWare       | Full | :white_check_mark: | :white_check_mark: | * :white_check_mark: | 
 | 6Wind       | Full | :white_check_mark: |
 | F5 BigIP   | Partial | :white_check_mark:  |
 | Juniper JunOS | Partial | :white_check_mark:  |

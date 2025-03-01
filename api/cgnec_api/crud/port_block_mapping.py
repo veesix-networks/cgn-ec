@@ -6,7 +6,7 @@ from cgnec_api.models import NATPortBlockMapping
 
 
 class CRUDPortBlockMapping(CRUDBase[NATPortBlockMapping, None, None]):
-    def get_by_x_ip_and_port(
+    async def get_by_x_ip_and_port(
         self,
         db: Session,
         timestamp_lt: datetime,
@@ -18,8 +18,7 @@ class CRUDPortBlockMapping(CRUDBase[NATPortBlockMapping, None, None]):
         skip: int = 0,
     ) -> list[NATPortBlockMapping]:
         filters = [
-            NATPortBlockMapping.timestamp <= timestamp_lt,
-            NATPortBlockMapping.timestamp >= timestamp_gt,
+            NATPortBlockMapping.timestamp.between(timestamp_gt, timestamp_lt),
         ]
 
         if x_ip is not None:
@@ -32,7 +31,7 @@ class CRUDPortBlockMapping(CRUDBase[NATPortBlockMapping, None, None]):
             filters.append(NATPortBlockMapping.end_port == end_port)
 
         query = select(NATPortBlockMapping).where(*filters).limit(limit).offset(skip)
-        results = db.exec(query)
+        results = await db.exec(query)
 
         return results.all()
 
