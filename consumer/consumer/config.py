@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     BATCH_SIZE: int = 30000
     OUTPUTS: list[Any] = [
         outputs.TimeScaleDBOutput(
-            "tsdb", 5432, "cgnat", "password123", batch_size=BATCH_SIZE
+            "db", 5432, "cgnat", "password123", batch_size=BATCH_SIZE
         )
     ]
 

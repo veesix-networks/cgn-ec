@@ -16,8 +16,7 @@ class CRUDAddressMapping(CRUDBase[NATAddressMapping, None, None]):
         skip: int = 0,
     ) -> list[NATAddressMapping]:
         filters = [
-            NATAddressMapping.timestamp <= timestamp_lt,
-            NATAddressMapping.timestamp >= timestamp_gt,
+            NATAddressMapping.timestamp.between(timestamp_gt, timestamp_lt),
         ]
 
         if x_ip is not None:
