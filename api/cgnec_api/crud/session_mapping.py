@@ -20,8 +20,7 @@ class CRUDSessionMapping(CRUDBase[NATSessionMapping, None, None]):
         skip: int = 0,
     ) -> list[NATSessionMapping]:
         filters = [
-            NATSessionMapping.timestamp <= timestamp_lt,
-            NATSessionMapping.timestamp >= timestamp_gt,
+            NATSessionMapping.timestamp.between(timestamp_gt, timestamp_lt),
         ]
 
         if x_ip is not None:

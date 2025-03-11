@@ -16,6 +16,8 @@ async def get_session_mappings(
     db: DatabaseDep,
     x_ip: str = None,
     x_port: int = None,
+    dst_ip: str = None,
+    dst_port: int = None,
     timestamp_gt: datetime = None,
     timestamp_lt: datetime = datetime.now(tz=timezone.utc),
     limit: int = 100,
@@ -41,7 +43,7 @@ async def get_session_mappings(
         )
 
     results = await crud.session_mapping.get_by_x_ip(
-        db, timestamp_lt, timestamp_gt, x_ip, x_port, limit, skip
+        db, timestamp_lt, timestamp_gt, x_ip, x_port, dst_ip, dst_port, limit, skip
     )
 
     return results

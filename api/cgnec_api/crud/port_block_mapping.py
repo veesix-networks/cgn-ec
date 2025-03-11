@@ -18,8 +18,7 @@ class CRUDPortBlockMapping(CRUDBase[NATPortBlockMapping, None, None]):
         skip: int = 0,
     ) -> list[NATPortBlockMapping]:
         filters = [
-            NATPortBlockMapping.timestamp <= timestamp_lt,
-            NATPortBlockMapping.timestamp >= timestamp_gt,
+            NATPortBlockMapping.timestamp.between(timestamp_gt, timestamp_lt),
         ]
 
         if x_ip is not None:
