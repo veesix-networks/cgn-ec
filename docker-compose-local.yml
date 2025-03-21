@@ -74,12 +74,9 @@ services:
       - cgn_ec
 
   consumer:
-    build:
-      context: .
-      dockerfile: dockerfiles/consumer.Dockerfile
-    environment:
-      KAFKA_BOOTSTRAP_SERVERS: "kafka:9094"
-      KAFKA_MAX_RECORDS_POLL: 1000
+    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.1.0
+    volumes:
+      - ./config.yaml:/app/config.yaml
     networks:
       - kafka
       - cgn_ec
@@ -121,6 +118,14 @@ services:
     networks:
       - kafka
       - cgn_ec
+
+  api:
+    image: ghcr.io/veesix-networks/cgn-ec-api:v0.1.0
+    restart: "unless-stopped"
+    env_file:
+      - .env
+    ports:
+      - 3001:80
 
 volumes:
   kafka_data:
