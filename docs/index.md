@@ -23,10 +23,12 @@ Here are some key features of this project:
   git clone https://github.com/veesix-networks/cgn-ec.git && cd cgn-ec
   ```
 
-2) Copy the `.env-example` to `.env` and change the variables as needed, also ensure you change `DOMAIN_NAME` if you want the API to work or configure `cgn-ec` as a host in your local `/etc/hosts` file to resolve the default domain.
+2) Copy the `config.example.yaml` to `config.yaml` and change the configuration for the consumer as required. Sample configurations can be found [here](https://docs.cgn-ec.veesix-networks.co.uk/architecture/consumers/).
 
   ```bash
-  cp .env-example .env
+  cp config.example.yaml config.yaml
+
+  nano config.yaml
   ```
 
 3) Now ensure Docker and docker compose plugin is installed and run:
@@ -43,7 +45,7 @@ Optional: If you would like to run with the NetFlow collector:
 
 ## Pro Edition
 
-We provide support/services for this project which include maintaining the solution on-prem or via AWS and also can add new vendors/outputs if you need something developed quick.
+We provide support/services for this project which include maintaining the software solution on-prem and can also add new vendors/outputs if you need something developed quick.
 
 Features included in Pro edition:
 
