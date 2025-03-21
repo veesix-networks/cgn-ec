@@ -10,6 +10,7 @@ services:
       - "${PWD}/producer/radius/default-config:/etc/raddb/sites-enabled/cgnat-logging"
       - "${PWD}/producer/radius/python3_mod_enabled:/etc/raddb/mods-enabled/python3"
       - "${PWD}/producer/radius/python3:/etc/raddb/mods-config/python3"
+    profiles: [radius]
 
   syslog_collector:
     image: balabit/syslog-ng:4.8.0
