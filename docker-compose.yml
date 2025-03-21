@@ -77,7 +77,7 @@ services:
       caddy.reverse_proxy: "{{upstreams 8080}}"
 
   consumer:
-    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.1.0
+    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.1.1
     volumes:
       - ./config.yaml:/app/config.yaml
     restart: "unless-stopped"

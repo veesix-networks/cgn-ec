@@ -74,7 +74,7 @@ services:
       - cgn_ec
 
   consumer:
-    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.1.0
+    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.1.1
     volumes:
       - ./config.yaml:/app/config.yaml
     networks:
@@ -120,28 +120,12 @@ services:
       - cgn_ec
 
   api:
-<<<<<<< HEAD
-    build:
-      context: .
-      dockerfile: dockerfiles/api.Dockerfile
-    restart: "unless-stopped"
-    networks:
-      - cgn_ec
-    ports:
-      - 8081:80
-    environment:
-      POSTGRES_HOST: db
-      POSTGRES_USER: cgnat
-      POSTGRES_PASSWORD: password123
-      POSTGRES_DB: cgnat
-=======
     image: ghcr.io/veesix-networks/cgn-ec-api:v0.1.0
     restart: "unless-stopped"
     env_file:
       - .env
     ports:
       - 3001:80
->>>>>>> nfware-netflow
 
 volumes:
   kafka_data:
