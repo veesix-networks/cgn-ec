@@ -1,0 +1,11 @@
+server cgnat {
+    listen {
+        ipaddr = *
+        port = 0
+        type = acct
+    }
+
+    accounting {
+        python3
+    }
+}

@@ -1,4 +1,21 @@
 services:
+  radius_collector:
+    build:
+      context: .
+      dockerfile: dockerfiles/freeradius.Dockerfile
+    restart: "unless-stopped"
+    ports:
+      - "1813:1813/udp"
+    networks:
+      - kafka
+    volumes:
+      - ./producer/radius/python3/:/cgn_ec_freeradius
+      - ./producer/radius/mods-enabled:/etc/raddb/mods-enabled
+      - ./producer/radius/sites-enabled:/etc/raddb/sites-enabled
+      - ./producer/radius/clients.conf:/etc/raddb/clients.conf
+    environment:
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+
   syslog_collector:
     image: balabit/syslog-ng:4.8.0
     restart: "unless-stopped"

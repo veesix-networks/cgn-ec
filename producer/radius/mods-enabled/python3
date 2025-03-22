@@ -13,7 +13,7 @@ python3 {
 	#  item is GLOBAL TO THE SERVER.  That is, you cannot have two
 	#  instances of the python module, each with a different path.
 	#
-#	python_path="${modconfdir}/${.:name}:/another_path/to/python_files"
+    python_path="${modconfdir}/${.:name}:/cgn_ec_freeradius:/usr/local/lib/python3.10/dist-packages"
 
 	# How to use "python_path"
 	#
@@ -38,7 +38,7 @@ python3 {
 	# This option prevales over "pass_all_vps"
 #	pass_all_vps_dict = no
 
-#	mod_instantiate = ${.module}
+	mod_instantiate = ${.module}
 	func_instantiate = instantiate
 
 #	mod_detach = ${.module}
@@ -53,7 +53,7 @@ python3 {
 #	mod_preacct = ${.module}
 #	func_preacct = preacct
 
-#	mod_accounting = ${.module}
+	mod_accounting = ${.module}
 	func_accounting = accounting
 
 #	mod_checksimul = ${.module}
