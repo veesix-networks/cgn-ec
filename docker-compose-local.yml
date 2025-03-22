@@ -93,7 +93,7 @@ services:
       - cgn_ec
 
   consumer:
-    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.1.1
+    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.2.0
     volumes:
       - ./config.yaml:/app/config.yaml
     networks:
