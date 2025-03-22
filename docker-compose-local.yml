@@ -120,7 +120,7 @@ services:
       - cgn_ec
 
   api:
-    image: ghcr.io/veesix-networks/cgn-ec-api:v0.1.0
+    image: ghcr.io/veesix-networks/cgn-ec-api:v0.2.0
     restart: "unless-stopped"
     env_file:
       - .env
