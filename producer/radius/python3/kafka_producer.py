@@ -35,11 +35,14 @@ def preacct(p):
 """
 
 
-def accounting(p):
+def accounting(p: dict):
     print("*** accounting ***")
-    accounting_attributes = transform_tuple(p)
+
+    request = p["request"]
+    config = transform_tuple(p["config"])
+    accounting_attributes = transform_tuple(request)
     producer.produce(
-        "cgnat.radius.accounting",
+        config.get("VeesixNetworks-CGN-EC-Kafka-Topic", "cgnat.accounting.generic"),
         value=json.dumps(accounting_attributes).encode("UTF-8"),
     )
     radiusd.radlog(radiusd.L_DBG, str(accounting_attributes))

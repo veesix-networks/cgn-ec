@@ -1,0 +1,5 @@
+VENDOR          VeesixNetworks                          214457
+BEGIN-VENDOR    VeesixNetworks
+
+ATTRIBUTE       VeesixNetworks-CGN-EC-Kafka-Topic                  1       string
+END-VENDOR VeesixNetworks

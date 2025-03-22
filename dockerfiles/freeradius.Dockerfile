@@ -27,3 +27,5 @@ RUN chown -R freerad:freerad /cgn_ec_freeradius && \
 COPY ./producer/radius/dictionaries/* /usr/share/freeradius
 
 RUN echo '$INCLUDE dictionary.nfware' >> /usr/share/freeradius/dictionary
+
+RUN echo '$INCLUDE dictionary.veesixnetworks' >> /usr/share/freeradius/dictionary

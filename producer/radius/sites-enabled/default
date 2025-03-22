@@ -6,6 +6,13 @@ server cgnat {
     }
 
     accounting {
+        if (!&NAS-IP-Address) {
+            update request {
+                NAS-IP-Address = "%{Packet-SRC-IP-Address}"
+            }
+        }
+
+        populate_cgn_vendor
         python3
     }
 }

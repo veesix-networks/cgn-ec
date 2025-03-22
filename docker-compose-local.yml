@@ -13,8 +13,10 @@ services:
       - ./producer/radius/mods-enabled:/etc/raddb/mods-enabled
       - ./producer/radius/sites-enabled:/etc/raddb/sites-enabled
       - ./producer/radius/clients.conf:/etc/raddb/clients.conf
+      - ./producer/radius/policy.d/veesixnetworks:/etc/raddb/policy.d/veesixnetworks
     environment:
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
+    command: -X
 
   syslog_collector:
     image: balabit/syslog-ng:4.8.0

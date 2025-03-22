@@ -10,7 +10,8 @@ Here are some key features of this project:
 - Up to <em>*</em>90% data compression compared to other DIY solutions.
 - Ability to add a new vendor within minutes.
 - Flexible outputs so you can preprocess CGNAT events and ship to external systems.
-- Syslog and NetFlow collectors with multi-vendor support out of the box.
+- Syslog, NetFlow and RADIUS Accounting collectors with multi-vendor support out of the box.
+
 
 ![Architecture Overview](docs/img/veesix_networks_cgn_logging.png)
 
@@ -66,13 +67,11 @@ If you would like a quote then please email us at [cgn-support@veesix-networks.c
 
 | Vendor      | Full / Partial | Syslog  | NetFlow | RADIUS |
 | ----------- | ----- | ------------------------------------ | ---- | ---- |
-| NFWare       | Full | :white_check_mark: | :white_check_mark: | * :white_check_mark: | 
+| NFWare       | Full | :white_check_mark: | :white_check_mark: | :white_check_mark: | 
 | 6Wind       | Full | :white_check_mark: |
 | F5 BigIP   | Partial | :white_check_mark:  |
 | Juniper JunOS | Partial | :white_check_mark:  |
 | A10 vThunder |  Partial | :white_check_mark: |
-
-<em>*</em>RADIUS Accounting collector is still being worked on to allow generic implementation using FreeRADIUS as the RADIUS server with python3 module, however there is currently a working solution for NFWare only.
 
 ## License
 

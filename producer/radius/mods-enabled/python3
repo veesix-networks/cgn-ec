@@ -36,7 +36,7 @@ python3 {
 	# Keys: "request", "reply", "config", "session-state", "proxy-request",
 	#       "proxy-reply"
 	# This option prevales over "pass_all_vps"
-#	pass_all_vps_dict = no
+	pass_all_vps_dict = yes
 
 	mod_instantiate = ${.module}
 	func_instantiate = instantiate
