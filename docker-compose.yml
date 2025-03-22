@@ -1,22 +1,13 @@
 services:
   radius_collector:
-    build:
-      context: .
-      dockerfile: dockerfiles/freeradius.Dockerfile
+    image: ghcr.io/veesix-networks/cgn-ec-producer-radius:v1.0.0
     ports:
       - 1813:1813/udp
     networks:
       - kafka
-    volumes:
-      - ./producer/radius/python3/:/cgn_ec_freeradius
-      - ./producer/radius/mods-enabled:/etc/raddb/mods-enabled
-      - ./producer/radius/sites-enabled:/etc/raddb/sites-enabled
-      - ./producer/radius/clients.conf:/etc/raddb/clients.conf
-      - ./producer/radius/policy.d/veesixnetworks:/etc/raddb/policy.d/veesixnetworks
     profiles: [radius]
     environment:
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
-    command: -X
 
   syslog_collector:
     image: balabit/syslog-ng:4.8.0
@@ -47,7 +38,7 @@ services:
     ports:
       - 9094:9094
     volumes:
-      - "kafka_data:/bitnami"
+      - kafka_data:/bitnami
     networks:
       - kafka
     environment:
