@@ -1,0 +1,38 @@
+# NFWare dictionary.
+#
+# Version:      1.0  26-Sep-2016
+#               $Id$
+#
+VENDOR          NFWare                          46576
+BEGIN-VENDOR    NFWare
+#
+#   vCGNAT accounting
+#
+ATTRIBUTE       NFWare-vCGNAT-Protocol                  1       integer
+ATTRIBUTE       NFWare-vCGNAT-Inside-Addr               2       ipaddr
+ATTRIBUTE       NFWare-vCGNAT-Inside-Port               3       short
+ATTRIBUTE       NFWare-vCGNAT-NAT-Addr                  4       ipaddr
+ATTRIBUTE       NFWare-vCGNAT-NAT-Port                  5       short
+ATTRIBUTE       NFWare-vCGNAT-Dest-Addr                 6       ipaddr
+ATTRIBUTE       NFWare-vCGNAT-Dest-Port                 7       short
+ATTRIBUTE       NFWare-vCGNAT-NAT-Port-Start            8       short
+ATTRIBUTE       NFWare-vCGNAT-NAT-Port-End              9       short
+VALUE   NFWare-vCGNAT-Protocol          ICMP                    1
+VALUE   NFWare-vCGNAT-Protocol          TCP                     6
+VALUE   NFWare-vCGNAT-Protocol          UDP                     17
+VALUE   NFWare-vCGNAT-Protocol          GRE                     47
+VALUE   NFWare-vCGNAT-Protocol          OTHER                   0
+ATTRIBUTE       NFWare-vCGNAT-Action                    10      integer
+VALUE   NFWare-vCGNAT-Action            Port-Allocated          1
+VALUE   NFWare-vCGNAT-Action            Port-Freed              2
+VALUE   NFWare-vCGNAT-Action            Session-Created         3
+VALUE   NFWare-vCGNAT-Action            Session-Deleted         4
+VALUE   NFWare-vCGNAT-Action            Port-Block-Allocated    5
+VALUE   NFWare-vCGNAT-Action            Port-Block-Freed        6
+ATTRIBUTE       NFWare-vCGNAT-Direction                 11      integer
+VALUE   NFWare-vCGNAT-Direction         Outbound                0
+VALUE   NFWare-vCGNAT-Direction         Inbound                 1
+VALUE   NFWare-vCGNAT-Direction         None                    2
+ATTRIBUTE       NFWare-vCGNAT-64-Inside-Addr            12      ipv6addr
+ATTRIBUTE       NFWare-vCGNAT-VRF                       13      integer
+END-VENDOR NFWare

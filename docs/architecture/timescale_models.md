@@ -2,7 +2,7 @@ TimescaleDB is our preferred Output of choice when storing your CGNAT logs in a 
 
 A lot of effort has gone into the data modelling and figuring out the right compression policies to get the most out of the underlying storage.
 
-You can view the data models [here on the GitHub repository](https://github.com/veesix-networks/cgn-ec/blob/main/consumer/consumer/models.py)
+You can view the data models [here on the GitHub repository](https://github.com/veesix-networks/cgn-ec-models/blob/main/cgn_ec_models/sqlmodel.py)
 
 These data models can also be used in other databases but you will need to translate the model to the relevant format, eg. using the influx line protocol when using influxdb.
 

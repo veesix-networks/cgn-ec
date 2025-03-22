@@ -1,33 +1,51 @@
 services:
-  syslog_collector:
-    image: balabit/syslog-ng:4.8.0
-    restart: "unless-stopped"
+  radius_collector:
+    build:
+      context: .
+      dockerfile: dockerfiles/freeradius.Dockerfile
     ports:
-      - "1514:1514/udp"
+      - 1813:1813/udp
     networks:
       - kafka
     volumes:
-      - "${PWD}/producer/syslog/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf"
-      - "${PWD}/producer/syslog/conf.d:/etc/syslog-ng/cgn-ec.conf.d"
+      - ./producer/radius/python3/:/cgn_ec_freeradius
+      - ./producer/radius/mods-enabled:/etc/raddb/mods-enabled
+      - ./producer/radius/sites-enabled:/etc/raddb/sites-enabled
+      - ./producer/radius/clients.conf:/etc/raddb/clients.conf
+      - ./producer/radius/policy.d/veesixnetworks:/etc/raddb/policy.d/veesixnetworks
+    profiles: [radius]
+    environment:
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+    command: -X
+
+  syslog_collector:
+    image: balabit/syslog-ng:4.8.0
+    ports:
+      - 1514:1514/udp
+    networks:
+      - kafka
+    volumes:
+      - "./producer/syslog/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf"
+      - "./producer/syslog/cgn-ec.conf.d:/etc/syslog-ng/cgn-ec.conf.d"
+    profiles: [syslog]
 
   netflow_collector:
     image: pmacct/nfacctd:bleeding-edge
-    restart: "unless-stopped"
     init: true
     ports:
-      - "9995:9995/udp"
+      - 9995:9995/udp
     networks:
       - kafka
     volumes:
-      - ${PWD}/producer/netflow/nfacctd.conf:/etc/pmacct/nfacctd.conf:ro
-      - ${PWD}/producer/netflow/data:/root/data
+      - ./producer/netflow/nfacctd.conf:/etc/pmacct/nfacctd.conf:ro
+      - ./producer/netflow/kafka.conf:/etc/pmacct/kafka.conf:ro
+      - ./producer/netflow/data:/root/data
     profiles: [netflow]
 
   kafka:
     image: docker.io/bitnami/kafka:3.9
-    restart: "unless-stopped"
     ports:
-      - "9094:9094"
+      - 9094:9094
     volumes:
       - "kafka_data:/bitnami"
     networks:
@@ -36,8 +54,8 @@ services:
       KAFKA_CFG_NODE_ID: 1
       KAFKA_CFG_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT'
-      KAFKA_CFG_LISTENERS: 'INTERNAL://:9092,CONTROLLER://:9093,EXTERNAL://:9094'
-      KAFKA_CFG_ADVERTISED_LISTENERS: 'INTERNAL://kafka:9092,EXTERNAL://kafka:9094'
+      KAFKA_CFG_LISTENERS: 'INTERNAL://kafka:9092,CONTROLLER://:9093,EXTERNAL://:9094'
+      KAFKA_CFG_ADVERTISED_LISTENERS: 'INTERNAL://kafka:9092,EXTERNAL://:9094'
       KAFKA_CFG_INTER_BROKER_LISTENER_NAME: 'INTERNAL'
       KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: '1@kafka:9093'
       KAFKA_CFG_PROCESS_ROLES: 'broker,controller'
@@ -48,9 +66,10 @@ services:
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
       BITNAMI_DEBUG: 'true'
 
-  kafka-ui:
+  kafka_ui:
     image: provectuslabs/kafka-ui:master
-    restart: "unless-stopped"
+    ports:
+      - 8080:8080
     depends_on:
       - kafka
     environment:
@@ -58,17 +77,13 @@ services:
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
     networks:
       - kafka
-    labels:
-      caddy: ${DOMAIN_NAME_KAFKA_UI:-cgn-ec-kafka-ui}
-      caddy.reverse_proxy: "{{upstreams 8080}}"
 
   consumer:
-    build:
-      context: .
-      dockerfile: dockerfiles/consumer.Dockerfile
-    restart: "unless-stopped"
+    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.2.0
+    volumes:
+      - ./config.yaml:/app/config.yaml
     environment:
-      KAFKA_BOOTSTRAP_SERVERS: "kafka:9094"
+      KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
       KAFKA_MAX_RECORDS_POLL: 30000
     networks:
       - kafka
@@ -76,12 +91,11 @@ services:
 
   prometheus:
     image: prom/prometheus
+    ports:
+      - 9090:9090
     container_name: prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
-    ports:
-      - 9090:9090
-    restart: unless-stopped
     networks:
       - cgn_ec
     volumes:
@@ -90,15 +104,14 @@ services:
 
   grafana:
     image: grafana/grafana
+    ports:
+      - 3000:3000
     container_name: grafana
-    restart: unless-stopped
     networks:
       - cgn_ec
-    labels:
-      caddy: ${DOMAIN_NAME_GRAFANA:-cgn-ec-grafana}
-      caddy.reverse_proxy: "{{upstreams 3000}}"
-    env_file:
-      - .env
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
     volumes:
       - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
       - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
@@ -113,38 +126,22 @@ services:
       - cgn_ec
 
   api:
-    build:
-      context: .
-      dockerfile: dockerfiles/api.Dockerfile
-    restart: "unless-stopped"
-    networks:
-      - caddy
-    env_file:
-      - .env
-    labels:
-      caddy: ${DOMAIN_NAME_API:-cgn-ec}
-      caddy.reverse_proxy: "{{upstreams 80}}"
-      #caddy.tls: "internal"
-
-  caddy:
-    image: lucaslorentz/caddy-docker-proxy:ci-alpine
+    image: ghcr.io/veesix-networks/cgn-ec-api:v0.2.0
     ports:
-      - 80:80
-      - 443:443
-    environment:
-      - CADDY_INGRESS_NETWORKS=caddy
+      - 3001:80
     networks:
-      - caddy
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - caddy_data:/data
-    restart: unless-stopped
+      - cgn_ec
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-tsdb}
+      POSTGRES_USER: ${POSTGRES_USER:-cgnat}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password123}
+      POSTGRES_DB: ${POSTGRES_DB:-cgnat}
 
-  db:
+  tsdb:
     image: timescale/timescaledb:2.17.2-pg17
     volumes:
-      - ${PWD}/database:/var/lib/postgresql/data
-      - ${PWD}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./database:/var/lib/postgresql/data
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     ports:
       - 5432:5432
     environment:
@@ -152,17 +149,13 @@ services:
       POSTGRES_PASSWORD: password123
     networks:
       - cgn_ec
-    restart: unless-stopped
     profiles: [db]
 
 volumes:
   kafka_data:
     driver: local
   prom_data: {}
-  caddy_data: {}
 
 networks:
   kafka: {}
   cgn_ec: {}
-  caddy:
-    external: true

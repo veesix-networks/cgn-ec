@@ -1,17 +1,34 @@
 services:
+  radius_collector:
+    build:
+      context: .
+      dockerfile: dockerfiles/freeradius.Dockerfile
+    ports:
+      - "1813:1813/udp"
+    networks:
+      - kafka
+    volumes:
+      - ./producer/radius/python3/:/cgn_ec_freeradius
+      - ./producer/radius/mods-enabled:/etc/raddb/mods-enabled
+      - ./producer/radius/sites-enabled:/etc/raddb/sites-enabled
+      - ./producer/radius/clients.conf:/etc/raddb/clients.conf
+      - ./producer/radius/policy.d/veesixnetworks:/etc/raddb/policy.d/veesixnetworks
+    environment:
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+    command: -X
+
   syslog_collector:
     image: balabit/syslog-ng:4.8.0
-    restart: "unless-stopped"
     ports:
       - "1514:1514/udp"
     networks:
       - kafka
     volumes:
-      - "./producer/syslog/:/etc/syslog-ng/"
+      - "./producer/syslog/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf"
+      - "./producer/syslog/cgn-ec.conf.d:/etc/syslog-ng/cgn-ec.conf.d"
 
   netflow_collector:
     image: pmacct/nfacctd:bleeding-edge
-    restart: "unless-stopped"
     init: true
     ports:
       - "9995:9995/udp"
@@ -23,7 +40,6 @@ services:
 
   kafka:
     image: docker.io/bitnami/kafka:3.9
-    restart: "unless-stopped"
     ports:
       - "9094:9094"
     volumes:
@@ -48,7 +64,6 @@ services:
 
   kafka-ui:
     image: provectuslabs/kafka-ui:master
-    restart: "unless-stopped"
     ports:
       - 8080:8080
     depends_on:
@@ -59,7 +74,7 @@ services:
     networks:
       - kafka
 
-  db:
+  tsdb:
     image: timescale/timescaledb:2.17.2-pg17
     volumes:
       - ./database:/var/lib/postgresql/data
@@ -74,12 +89,9 @@ services:
       - cgn_ec
 
   consumer:
-    build:
-      context: .
-      dockerfile: dockerfiles/consumer.Dockerfile
-    environment:
-      KAFKA_BOOTSTRAP_SERVERS: "kafka:9094"
-      KAFKA_MAX_RECORDS_POLL: 1000
+    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.2.0
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
     networks:
       - kafka
       - cgn_ec
@@ -107,8 +119,8 @@ services:
     networks:
       - cgn_ec
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=grafana
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
     volumes:
       - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
       - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
@@ -123,19 +135,14 @@ services:
       - cgn_ec
 
   api:
-    build:
-      context: .
-      dockerfile: dockerfiles/api.Dockerfile
-    restart: "unless-stopped"
-    networks:
-      - cgn_ec
-    ports:
-      - 8081:80
+    image: ghcr.io/veesix-networks/cgn-ec-api:v0.2.0
     environment:
-      POSTGRES_HOST: db
-      POSTGRES_USER: cgnat
-      POSTGRES_PASSWORD: password123
-      POSTGRES_DB: cgnat
+      POSTGRES_HOST: ${POSTGRES_HOST:-tsdb}
+      POSTGRES_USER: ${POSTGRES_USER:-cgnat}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password123}
+      POSTGRES_DB: ${POSTGRES_DB:-cgnat}
+    ports:
+      - 3001:80
 
 volumes:
   kafka_data:

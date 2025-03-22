@@ -63,7 +63,7 @@ SELECT create_hypertable('port_mapping', by_range('timestamp', INTERVAL '1 hour'
 SELECT create_hypertable('port_block_mapping', by_range('timestamp', INTERVAL '1 hour'));
 
 ALTER TABLE session_mapping SET (timescaledb.compress, timescaledb.compress_orderby = 'timestamp DESC', timescaledb.compress_segmentby = 'x_ip');
-ALTER TABLE address_mapping SET (timescaledb.compress, timescaledb.compress_orderby = 'timestamp DESC');
+ALTER TABLE address_mapping SET (timescaledb.compress, timescaledb.compress_orderby = 'timestamp DESC', timescaledb.compress_segmentby = 'x_ip');
 ALTER TABLE port_mapping SET (timescaledb.compress, timescaledb.compress_orderby = 'timestamp DESC', timescaledb.compress_segmentby = 'x_ip');
 ALTER TABLE port_block_mapping SET (timescaledb.compress, timescaledb.compress_orderby = 'timestamp DESC', timescaledb.compress_segmentby = 'x_ip');
 
