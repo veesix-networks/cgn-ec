@@ -34,13 +34,13 @@ Here are some key features of this project:
 3) Now ensure Docker and docker compose plugin is installed and run:
 
   ```bash
-  docker compose up
+  docker compose --profile db --profile syslog up
   ```
 
-Optional: If you would like to run with the NetFlow collector:
+Optional: If you would like to run the other collectors, then add the following profiles:
 
   ```bash
-  docker compose --profile netflow up
+  --profile netflow --profile radius
   ```
 
 ## Pro Edition
