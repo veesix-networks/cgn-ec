@@ -1,0 +1,14 @@
+Acct-Status-Type = 1
+Acct-Session-Id = "1234567890abcdef"
+NAS-Identifier = "vCGNAT"
+Event-Timestamp = 1680103200
+NFWare-vCGNAT-Protocol = 6
+NFWare-vCGNAT-Action = 3
+NFWare-vCGNAT-Inside-Addr = 192.168.1.20
+NFWare-vCGNAT-Inside-Port = 54321
+NFWare-vCGNAT-Nat-Addr = 10.10.10.20
+NFWare-vCGNAT-Nat-Port = 12345
+NFWare-vCGNAT-Dest-Addr = 203.0.113.10
+NFWare-vCGNAT-Dest-Port = 80
+NFWare-vCGNAT-VRF = 1002
+NFWare-vCGNAT-Direction = 2

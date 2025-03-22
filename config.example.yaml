@@ -6,13 +6,13 @@ batch_size: 30000
 
 # Handler Configuration
 handler:
-  type: "cgn_ec_consumer.handlers.nfware.NFWareSyslogHandler"
+  type: "NFWareSyslogHandler"
   options: {}
 
 # Outputs Configuration
 outputs:
   # TimeScaleDB Output
-  - type: "cgn_ec_consumer.outputs.timescaledb.TimeScaleDBOutput"
+  - type: "TimeScaleDBOutput"
     options:
       address: "tsdb"
       port: 5432
@@ -22,7 +22,7 @@ outputs:
       batch_size: 30000
 
   # Example HTTP Output
-  # - type: "cgn_ec_consumer.outputs.http.HTTPOutput"
+  # - type: "HTTPOutput"
   #   options:
   #     url: "http://example.com/api/metrics"
   #     headers:

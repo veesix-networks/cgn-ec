@@ -11,7 +11,7 @@ Here are our recommendations for production to run cgn-ec.
 
 ## Collectors
 
-A collector is a container which implements the various logic to pass messages into Kafka so they can be normalized by a consumer. Collectors should be as simple as possible, take a look at the syslog-ng and nfacctd (NetFlow) collectors. Here are some basic scaling recommendations:
+A collector is a container which implements the various logic to pass messages into Kafka so they can be normalized by a consumer. Collectors should be as simple as possible, take a look at the syslog-ng, freeradius (RADIUS Accounting) and nfacctd (NetFlow) collectors. Here are some basic scaling recommendations:
 
 - Load Balancer infront of multiple collectors to scale out ingestion.
 - Separate Collector per collection method, eg. 1 syslog collector and 1 netflow collector. (You can install both on the same VM if you don't want to use containers but this is not a supported method).

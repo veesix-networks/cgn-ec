@@ -1,4 +1,23 @@
 services:
+  radius_collector:
+    build:
+      context: .
+      dockerfile: dockerfiles/freeradius.Dockerfile
+    restart: "unless-stopped"
+    ports:
+      - "1813:1813/udp"
+    networks:
+      - kafka
+    volumes:
+      - ./producer/radius/python3/:/cgn_ec_freeradius
+      - ./producer/radius/mods-enabled:/etc/raddb/mods-enabled
+      - ./producer/radius/sites-enabled:/etc/raddb/sites-enabled
+      - ./producer/radius/clients.conf:/etc/raddb/clients.conf
+      - ./producer/radius/policy.d/veesixnetworks:/etc/raddb/policy.d/veesixnetworks
+    environment:
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+    command: -X
+
   syslog_collector:
     image: balabit/syslog-ng:4.8.0
     restart: "unless-stopped"
@@ -74,7 +93,7 @@ services:
       - cgn_ec
 
   consumer:
-    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.1.1
+    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.2.0
     volumes:
       - ./config.yaml:/app/config.yaml
     networks:

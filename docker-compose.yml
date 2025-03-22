@@ -1,16 +1,21 @@
 services:
   radius_collector:
-    image: freeradius/freeradius-server:3.2.7-alpine
+    build:
+      context: .
+      dockerfile: dockerfiles/freeradius.Dockerfile
     restart: "unless-stopped"
     ports:
       - "11813:1813/udp"
     networks:
       - kafka
     volumes:
-      - "./producer/radius/default-config:/etc/raddb/sites-enabled/cgnat-logging"
-      - "./producer/radius/python3_mod_enabled:/etc/raddb/mods-enabled/python3"
-      - "./producer/radius/python3:/etc/raddb/mods-config/python3"
+      - ./producer/radius/python3/:/cgn_ec_freeradius
+      - ./producer/radius/mods-enabled:/etc/raddb/mods-enabled
+      - ./producer/radius/sites-enabled:/etc/raddb/sites-enabled
+      - ./producer/radius/clients.conf:/etc/raddb/clients.conf
     profiles: [radius]
+    environment:
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
 
   syslog_collector:
     image: balabit/syslog-ng:4.8.0
@@ -77,7 +82,7 @@ services:
       caddy.reverse_proxy: "{{upstreams 8080}}"
 
   consumer:
-    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.1.1
+    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.2.0
     volumes:
       - ./config.yaml:/app/config.yaml
     restart: "unless-stopped"

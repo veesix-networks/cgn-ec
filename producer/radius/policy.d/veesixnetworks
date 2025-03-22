@@ -1,0 +1,13 @@
+populate_cgn_vendor {
+    if (&NFWare-vCGNAT-Action) {
+        update config {
+            VeesixNetworks-CGN-EC-Kafka-Topic = "cgnat.accounting.nfware"
+        }
+
+        # https://docs.nfware.com/en/6.3/nat/logging.html#id6
+        # NFWare CGN does not expect Accounting-Response
+        update control {
+            Response-Packet-Type := "Do-Not-Respond"
+        }
+    }
+}
