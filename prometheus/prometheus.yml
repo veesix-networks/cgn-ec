@@ -20,6 +20,7 @@ scrape_configs:
   - targets:
     - localhost:9090
 - job_name: kafka-exporter
+  metrics_path: /metrics
   static_configs:
     - targets:
-      - 'kafka-exporter:9308'
+      - 'kafka_exporter:9308'

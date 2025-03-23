@@ -14,7 +14,7 @@ outputs:
   # TimeScaleDB Output
   - type: "TimeScaleDBOutput"
     options:
-      address: "db"
+      address: "tsdb"
       port: 5432
       username: "cgnat"
       password: "password123"
@@ -22,9 +22,29 @@ outputs:
       batch_size: 30000
 
   # Example HTTP Output
-  # - type: "HTTPOutput"
+  # - type: "HTTPWebhookOutput"
   #   options:
-  #     url: "http://example.com/api/metrics"
+  #     url: "http://webhook/metrics"
   #     headers:
-  #       Authorization: "Bearer token123"
+  #       x-api-key: default-change-me
   #     timeout: 10
+  #   preprocessors:
+  #     - name: filter_keys
+  #       arguments:
+  #         keys:
+  #           - src_ip
+  #           - src_port
+  #           - x_ip
+  #           - x_port
+  #           - timestamp
+  #           - dst_ip
+  #           - dst_port
+  #           - event
+  #     - name: match_kvs
+  #       arguments:
+  #         kvs:
+  #           src_ip: 192.168.3.30
+  #     - name: key_exists
+  #       arguments:
+  #         key: dst_port
+  #         ignore_none: true

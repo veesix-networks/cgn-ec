@@ -1,22 +1,13 @@
 services:
   radius_collector:
-    build:
-      context: .
-      dockerfile: dockerfiles/freeradius.Dockerfile
+    image: veesixnetworks/cgn-ec-producer-radius:v1.0.1
     ports:
       - 1813:1813/udp
     networks:
       - kafka
-    volumes:
-      - ./producer/radius/python3/:/cgn_ec_freeradius
-      - ./producer/radius/mods-enabled:/etc/raddb/mods-enabled
-      - ./producer/radius/sites-enabled:/etc/raddb/sites-enabled
-      - ./producer/radius/clients.conf:/etc/raddb/clients.conf
-      - ./producer/radius/policy.d/veesixnetworks:/etc/raddb/policy.d/veesixnetworks
     profiles: [radius]
     environment:
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
-    command: -X
 
   syslog_collector:
     image: balabit/syslog-ng:4.8.0
@@ -47,7 +38,7 @@ services:
     ports:
       - 9094:9094
     volumes:
-      - "kafka_data:/bitnami"
+      - kafka_data:/bitnami
     networks:
       - kafka
     environment:
@@ -64,7 +55,6 @@ services:
       KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_KRAFT_CLUSTER_ID: 'fiWo7IWazngRchmPES6qcA=='
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
-      BITNAMI_DEBUG: 'true'
 
   kafka_ui:
     image: provectuslabs/kafka-ui:master
@@ -79,7 +69,10 @@ services:
       - kafka
 
   consumer:
-    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.2.0
+    image: veesixnetworks/cgn-ec-consumer:v0.3.0
+    #build:
+    #  context: ../cgn-ec-consumer
+    restart: unless-stopped
     volumes:
       - ./config.yaml:/app/config.yaml
     environment:
@@ -103,7 +96,7 @@ services:
       - prom_data:/prometheus
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:11.5.2
     ports:
       - 3000:3000
     container_name: grafana
@@ -117,16 +110,18 @@ services:
       - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
       - ./grafana/dashboards:/var/lib/grafana/dashboards
 
-  kafka-exporter:
-    image: bitnami/kafka-exporter:latest
-    command:
-      - --kafka.server=kafka:9092
+  kafka_exporter:
+    image: danielqsj/kafka-exporter:latest
+    restart: unless-stopped
+    command: ["--kafka.server=kafka:9092"]
     networks:
       - kafka
       - cgn_ec
+    ports:
+      - 9308:9308
 
   api:
-    image: ghcr.io/veesix-networks/cgn-ec-api:v0.2.0
+    image: veesixnetworks/cgn-ec-api:v0.2.1
     ports:
       - 3001:80
     networks:

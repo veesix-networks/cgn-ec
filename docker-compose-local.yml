@@ -1,18 +1,10 @@
 services:
   radius_collector:
-    build:
-      context: .
-      dockerfile: dockerfiles/freeradius.Dockerfile
+    image: veesixnetworks/cgn-ec-producer-radius:v1.0.1
     ports:
-      - "1813:1813/udp"
+      - 1813:1813/udp
     networks:
       - kafka
-    volumes:
-      - ./producer/radius/python3/:/cgn_ec_freeradius
-      - ./producer/radius/mods-enabled:/etc/raddb/mods-enabled
-      - ./producer/radius/sites-enabled:/etc/raddb/sites-enabled
-      - ./producer/radius/clients.conf:/etc/raddb/clients.conf
-      - ./producer/radius/policy.d/veesixnetworks:/etc/raddb/policy.d/veesixnetworks
     environment:
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
     command: -X
@@ -20,7 +12,7 @@ services:
   syslog_collector:
     image: balabit/syslog-ng:4.8.0
     ports:
-      - "1514:1514/udp"
+      - 1514:1514/udp
     networks:
       - kafka
     volumes:
@@ -31,7 +23,7 @@ services:
     image: pmacct/nfacctd:bleeding-edge
     init: true
     ports:
-      - "9995:9995/udp"
+      - 9995:9995/udp
     networks:
       - kafka
     volumes:
@@ -41,9 +33,9 @@ services:
   kafka:
     image: docker.io/bitnami/kafka:3.9
     ports:
-      - "9094:9094"
+      - 9094:9094
     volumes:
-      - "kafka_data:/bitnami"
+      - kafka_data:/bitnami
     networks:
       - kafka
     environment:
@@ -89,7 +81,8 @@ services:
       - cgn_ec
 
   consumer:
-    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.2.0
+    image: veesixnetworks/cgn-ec-consumer:v0.3.0
+    restart: unless-stopped
     volumes:
       - ./config.yaml:/app/config.yaml:ro
     networks:
@@ -111,7 +104,7 @@ services:
       - prom_data:/prometheus
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:11.5.2
     container_name: grafana
     ports:
       - 3000:3000
@@ -127,7 +120,8 @@ services:
       - ./grafana/dashboards:/var/lib/grafana/dashboards
 
   kafka-exporter:
-    image: bitnami/kafka-exporter:latest
+    image: danielqsj/kafka-exporter:latest
+    restart: unless-stopped
     command:
       - --kafka.server=kafka:9092
     networks:
@@ -135,7 +129,7 @@ services:
       - cgn_ec
 
   api:
-    image: ghcr.io/veesix-networks/cgn-ec-api:v0.2.0
+    image: veesixnetworks/cgn-ec-api:v0.2.1
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST:-tsdb}
       POSTGRES_USER: ${POSTGRES_USER:-cgnat}
