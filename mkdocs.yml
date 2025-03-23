@@ -41,6 +41,7 @@ nav:
     - General Design: architecture/general_design.md
     - Extra Diagrams: architecture/further_look.md
     - Collectors (Producers): architecture/collectors.md
+    - Preprocessors: architecture/preprocessors.md
     - Consumers: architecture/consumers.md
     - Handlers: architecture/handlers.md
     - Outputs: architecture/outputs.md
