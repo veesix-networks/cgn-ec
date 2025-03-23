@@ -1,6 +1,6 @@
 services:
   radius_collector:
-    image: ghcr.io/veesix-networks/cgn-ec-producer-radius:v1.0.0
+    image: veesixnetworks/cgn-ec-producer-radius:v1.0.1
     ports:
       - 1813:1813/udp
     networks:
@@ -55,7 +55,6 @@ services:
       KAFKA_CFG_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_KRAFT_CLUSTER_ID: 'fiWo7IWazngRchmPES6qcA=='
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
-      BITNAMI_DEBUG: 'true'
 
   kafka_ui:
     image: provectuslabs/kafka-ui:master
@@ -70,7 +69,7 @@ services:
       - kafka
 
   consumer:
-    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.2.0
+    image: veesixnetworks/cgn-ec-consumer:v0.2.1
     volumes:
       - ./config.yaml:/app/config.yaml
     environment:
@@ -94,7 +93,7 @@ services:
       - prom_data:/prometheus
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:11.5.2
     ports:
       - 3000:3000
     container_name: grafana
@@ -108,16 +107,18 @@ services:
       - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
       - ./grafana/dashboards:/var/lib/grafana/dashboards
 
-  kafka-exporter:
-    image: bitnami/kafka-exporter:latest
-    command:
-      - --kafka.server=kafka:9092
+  kafka_exporter:
+    image: danielqsj/kafka-exporter:latest
+    restart: unless-stopped
+    command: ["--kafka.server=kafka:9092"]
     networks:
       - kafka
       - cgn_ec
+    ports:
+      - 9308:9308
 
   api:
-    image: ghcr.io/veesix-networks/cgn-ec-api:v0.2.0
+    image: veesixnetworks/cgn-ec-api:v0.2.1
     ports:
       - 3001:80
     networks:

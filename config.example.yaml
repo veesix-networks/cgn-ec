@@ -14,7 +14,7 @@ outputs:
   # TimeScaleDB Output
   - type: "TimeScaleDBOutput"
     options:
-      address: "db"
+      address: "tsdb"
       port: 5432
       username: "cgnat"
       password: "password123"
