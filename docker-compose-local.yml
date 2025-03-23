@@ -1,6 +1,6 @@
 services:
   radius_collector:
-    image: ghcr.io/veesix-networks/cgn-ec-producer-radius:v1.0.0
+    image: veesixnetworks/cgn-ec-producer-radius:v1.0.1
     ports:
       - 1813:1813/udp
     networks:
@@ -81,7 +81,7 @@ services:
       - cgn_ec
 
   consumer:
-    image: ghcr.io/veesix-networks/cgn-ec-consumer:v0.2.0
+    image: veesixnetworks/cgn-ec-consumer:v0.2.1
     volumes:
       - ./config.yaml:/app/config.yaml:ro
     networks:
@@ -103,7 +103,7 @@ services:
       - prom_data:/prometheus
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:11.5.2
     container_name: grafana
     ports:
       - 3000:3000
@@ -119,7 +119,8 @@ services:
       - ./grafana/dashboards:/var/lib/grafana/dashboards
 
   kafka-exporter:
-    image: bitnami/kafka-exporter:latest
+    image: danielqsj/kafka-exporter:latest
+    restart: unless-stopped
     command:
       - --kafka.server=kafka:9092
     networks:
@@ -127,7 +128,7 @@ services:
       - cgn_ec
 
   api:
-    image: ghcr.io/veesix-networks/cgn-ec-api:v0.2.0
+    image: veesixnetworks/cgn-ec-api:v0.2.1
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST:-tsdb}
       POSTGRES_USER: ${POSTGRES_USER:-cgnat}
