@@ -69,9 +69,7 @@ services:
       - kafka
 
   consumer:
-    image: veesixnetworks/cgn-ec-consumer:v0.3.0
-    #build:
-    #  context: ../cgn-ec-consumer
+    image: veesixnetworks/cgn-ec-consumer:v0.4.0
     restart: unless-stopped
     volumes:
       - ./config.yaml:/app/config.yaml
