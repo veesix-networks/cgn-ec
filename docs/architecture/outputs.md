@@ -86,7 +86,6 @@ Preprocessors can be attached to an output to perform logic such as filtering sp
 - You need to send events for a specific `src_ip` to a Kafka queue for further processing. In this scenario you can use the `KafkaOutput` output combined with the `match_kvs` preprocessor.
 - You need to temporarily drop any metrics with a specific `dst_ip` and `dst_port`. You can use the `BlackholeOutput` output combined with the `match_kvs` preprocessor.
 
-
 ### Preprocessor config example
 ```yaml
 outputs:
