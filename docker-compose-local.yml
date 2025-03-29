@@ -81,7 +81,8 @@ services:
       - cgn_ec
 
   consumer:
-    image: veesixnetworks/cgn-ec-consumer:v0.3.0
+    # image: veesixnetworks/cgn-ec-consumer:v0.4.0
+    build: ../cgn-ec-consumer
     restart: unless-stopped
     volumes:
       - ./config.yaml:/app/config.yaml:ro
@@ -129,7 +130,8 @@ services:
       - cgn_ec
 
   api:
-    image: veesixnetworks/cgn-ec-api:v0.2.1
+    #image: veesixnetworks/cgn-ec-api:v0.2.1
+    build: ../cgn-ec-api
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST:-tsdb}
       POSTGRES_USER: ${POSTGRES_USER:-cgnat}
@@ -137,6 +139,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-cgnat}
     ports:
       - 3001:80
+    networks:
+      - cgn_ec
 
 volumes:
   kafka_data:

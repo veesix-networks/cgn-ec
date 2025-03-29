@@ -21,6 +21,17 @@ outputs:
       database: "cgnat"
       batch_size: 30000
 
+  # Example Kafka Output   # Possible values: x_ip, x_port, dst_ip, dst_port, src_ip, src_port
+  # - type: "KafkaOutput"
+  #   options:
+  #     bootstrap_servers: "localhost:9094"
+  #     topic: "cgnat.events"
+  #     key_field: "x_ip"
+  #     topic_event_map:
+  #       session-mapping: "sometopic.for.sessionmapping"
+  #       address-mapping: "sometopic.for.addressmapping"
+  #     producer_extra_config: {}
+
   # Example HTTP Output
   # - type: "HTTPWebhookOutput"
   #   options:
