@@ -130,8 +130,12 @@ services:
       - cgn_ec
 
   api:
+<<<<<<< HEAD
     #image: veesixnetworks/cgn-ec-api:v0.2.1
     build: ../cgn-ec-api
+=======
+    image: veesixnetworks/cgn-ec-api:v0.2.1
+>>>>>>> dev
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST:-tsdb}
       POSTGRES_USER: ${POSTGRES_USER:-cgnat}
