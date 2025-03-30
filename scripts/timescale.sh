@@ -1,0 +1,1 @@
+timescaledb-parallel-copy --table "session_mapping" --file "session_mapping_auto_2025-02-01_00-00-00.csv" --workers 8 --verbose --connection "user=postgres sslmode=disable dbname=cgnat"

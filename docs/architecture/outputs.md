@@ -78,6 +78,33 @@ outputs:
 | key_field | Checks if field exist in the metric, and sets the key for the produced event. Typical options are `x_ip`, `x_port`, `src_ip`, `dst_ip` and `dst_port`. |
 | producer_extra_config | Extra configuration to pass into the Kafka Producer (eg. SSL configuration). |
 
+### Redis
+
+Use Redis Cache to store events and update them in real-time. Typically `src_ip` is the best field to track in a cache.
+
+```yaml
+outputs:
+  - type: "RedisOutput"
+    options:
+      host: redis
+      port: 6379
+      key_field: src_ip
+      key_ttl: 900
+      key_event_map:
+        session-mapping: cgnat:events:sessionmapping
+      redis_extra_config:
+        password: example
+```
+
+| Name | Description |
+| --- | --- |
+| host | Redis Host. |
+| port | Redis Port. |
+| key_field | Field to use in the redis key. |
+| key_ttl | Sets expiration for the key. |
+| key_event_map | Used to prepend to the key for specific events (eg. `session-mapping`), by default: `cgnat:events:<event_type>:<key_field>`. |
+| redis_extra_config | Extra config to pass into the Redis class. Eg. Auth/TLS/etc |
+
 ## Preprocessors
 
 Preprocessors can be attached to an output to perform logic such as filtering specific keys or checking a certain key/value pair exist. Here are some scenarios where you could apply a preprocessor to a relevant output:

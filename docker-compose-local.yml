@@ -142,6 +142,25 @@ services:
     networks:
       - cgn_ec
 
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_PASSWORD: secret
+    networks:
+      - cgn_ec
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    restart: always
+    ports:
+      - "5540:5540"
+    networks:
+      - cgn_ec
+
+
 volumes:
   kafka_data:
     driver: local
