@@ -32,6 +32,13 @@ outputs:
   #       address-mapping: "sometopic.for.addressmapping"
   #     producer_extra_config: {}
 
+  # Example Redis Output  # src_ip is typically the best key_field for 99% of scenarios
+  # - type: "RedisOutput"
+  #   options:
+  #     host: redis
+  #     port: 6379
+  #     key_field: src_ip
+
   # Example HTTP Output
   # - type: "HTTPWebhookOutput"
   #   options:

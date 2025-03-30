@@ -1,10 +1,14 @@
 site_name: veesix ::networks - cgn-ec
 site_url: https://docs.veesix-networks.co.uk/cgn-ec
+repo_url: https://github.com/veesix-networks/cgn-ec
+repo_name: veesix-networks/cgn-ec
 logo: img/logo.png
 plugins:
   - redoc-tag
 theme:
   name: material
+  icon:
+    repo: fontawesome/brands/github
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
