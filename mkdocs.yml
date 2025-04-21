@@ -51,6 +51,7 @@ nav:
     - Outputs: architecture/outputs.md
     - Kafka: architecture/message_queue.md
     - TimescaleDB Models: architecture/timescale_models.md
+    - API Hooks: architecture/api_hooks.md
   - API & SDKs: 
     - API: api/index.md
     - Python SDK: api/python_sdk.md

@@ -101,9 +101,16 @@ services:
     networks:
       - cgn_ec
     environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: admin
+      #GF_SECURITY_ADMIN_USER: admin
+      #GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_SECURITY_ALLOW_EMBEDDING: true
+      GF_SECURITY_AUTH_BASIC_ENABLED: false
+      GF_AUTH_DISABLE_LOGIN_FORM: true
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_USERS_AUTO_ASSIGN_ORG_ID: 1
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
     volumes:
+      - grafana_data:/var/lib/grafana
       - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
       - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
       - ./grafana/dashboards:/var/lib/grafana/dashboards
@@ -119,7 +126,7 @@ services:
       - 9308:9308
 
   api:
-    image: veesixnetworks/cgn-ec-api:v0.2.1
+    image: veesixnetworks/cgn-ec-api:v0.4.0
     ports:
       - 3001:80
     networks:
@@ -148,6 +155,7 @@ volumes:
   kafka_data:
     driver: local
   prom_data: {}
+  grafana_data: {}
 
 networks:
   kafka: {}
