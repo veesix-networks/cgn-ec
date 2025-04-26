@@ -41,6 +41,7 @@ nav:
   - Get Started: 
     - Intro: index.md
     - Recommended Configuration: recommended_setup.md
+    - Compression Examples: compression_examples.md
   - Architecture:
     - General Design: architecture/general_design.md
     - Extra Diagrams: architecture/further_look.md

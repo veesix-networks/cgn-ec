@@ -4,7 +4,9 @@ Here are our recommendations for production to run cgn-ec.
 - Docker or Kubernetes infrastructure to scale the collectors and consumers.
 - Dedicated CPU cores (more cores is better for the consumers/data processors).
 - If running a dedicated Kafka setup, follow hardware recommendations with ZooKeeper or KRaft configuration.
-- 1 CPU core for every 30,000 Kafka messages ratio for a consumer is good for very basic pre-processing flows. However this can change depending on how efficient you build the Handler code.
+- 1 CPU core for every 30,000 Kafka messages ratio for a consumer is good for very basic pre-processing flows. However this can change depending on how efficient you build the Handler code or which outputs you enable.
+
+For a realistic deployment, you'll probably configure at least 1 handler, 1 output and run over the network which adds a slight extra delay to fetching records from the message queue and sending the metrics to the output, therefore you should aim for around 5k messages per second, per vCPU.
 
 !!! question "Don't want to worry about the infrastructure?"
     If you don't want to worry about the hardware requirements, we can host the infrastructure for you under a pro license.

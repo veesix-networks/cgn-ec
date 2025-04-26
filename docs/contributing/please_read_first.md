@@ -19,7 +19,7 @@ Any feedback for the contributing workflows whether it be the branch structure, 
 | kafka             | 9094:9094/tcp                 | Kafka message queue for collectors    |
 | kafka-ui          | 8080:8080/tcp                 | UI for Kafka                          |
 | db                | 5432:5432/tcp                 | TimeScaleDB for CGN metrics           |
-| consumer          | N/A                           | Python Consumer                       |
+| consumer          | 4499:4499/tcp                 | Consumer Prometheus Python Exporter   |
 | prometheus        | 9090:9090/tcp                 | Collects Kafka and Collector perf.    |
 | grafana           | 3000:3000/tcp                 | Dashboard for perf. metrics           |
 | kafka-exporter    | N/A                           | Kafka Prometheus Exporter             |
