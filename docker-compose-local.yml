@@ -160,11 +160,25 @@ services:
     networks:
       - cgn_ec
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./configs/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
+    environment:
+      RABBITMQ_DEFAULT_USER: cgnec
+      RABBITMQ_DEFAULT_PASS: cgnec
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - cgn_ec
 
 volumes:
   kafka_data:
     driver: local
   prom_data:
+  rabbitmq_data: 
 
 networks:
   kafka: {}
