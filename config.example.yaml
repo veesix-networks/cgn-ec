@@ -68,3 +68,11 @@ outputs:
   #       arguments:
   #         key: dst_port
   #         ignore_none: true
+
+  # AMQP Output - RabbitMQ
+  # - type: "AMQPOutput"
+  #   options:
+  #     host: "localhost"
+  #     port: 5672
+  #     username: cgnec
+  #     password: cgnec

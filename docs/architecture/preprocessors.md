@@ -72,7 +72,7 @@ Like `match_kv`, but allows you to match multiple key/value pairs. If one doesn'
 
 ### key_exists
 
-Filters metrics that have a specific key, by default if the key is `None` then the metric is dropped.
+Filters metrics that have a specific key. By default, if the key value is `None`, the metric is dropped. Override this behaviour by setting `ignore_none` to true.
 
 ```yaml title="config.yaml" hl_lines="9-13"
   # Example HTTP Output

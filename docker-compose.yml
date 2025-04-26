@@ -69,14 +69,14 @@ services:
       - kafka
 
   consumer:
-    image: veesixnetworks/cgn-ec-consumer:v0.6.0
+    image: veesixnetworks/cgn-ec-consumer:v0.7.0
     restart: unless-stopped
     volumes:
       - ./config.yaml:/app/config.yaml
     environment:
       KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
       KAFKA_MAX_RECORDS_POLL: 30000
-      PROCESSES: 8
+      PROCESSES: 1
       METRICS_PORT: 4499
     ports:
       - 4499:4499

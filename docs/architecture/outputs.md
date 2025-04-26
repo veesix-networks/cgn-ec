@@ -22,14 +22,14 @@ outputs:
       batch_size: 30000
 ```
 
-| Name | Description |
-| --- | --- |
+| Name | Description | Default Value |
+| --- | --- | --- |
 | address | TimescaleDB host to connect to. |
 | port | TCP port to connect to. |
 | username | Username for authentication. |
 | password | Password for authentication. |
-| database | Database to connect to. |
-| batch_size | How many metrics to batch in a bulk insert. |
+| database | Database to connect to. | cgnat |
+| batch_size | How many metrics to batch in a bulk insert. | 10000 |
 
 ### HTTP
 
@@ -45,11 +45,11 @@ outputs:
       timeout: 10
 ```
 
-| Name | Description |
-| --- | --- |
+| Name | Description | Default Value |
+| --- | --- | --- |
 | url | URL to send payload to. |
 | headers | Extra headers to add to the HTTP request |
-| timeout | requests Session timeout |
+| timeout | requests Session timeout in seconds | 5 |
 
 ### Kafka
 
@@ -69,11 +69,11 @@ outputs:
       producer_extra_config: {}
 ```
 
-| Name | Description |
-| --- | --- |
+| Name | Description | Default Value |
+| --- | --- | --- |
 | bootstrap_servers | Kafka Bootstrap Servers. |
-| topic | If populated, all events get sent to this specific topic, can be empty. |
-| default_topic | When used with topic_event_map, any events not captured in the map will be sent to this topic. |
+| topic | If populated, all events get sent to this specific topic, can be empty.
+| default_topic | When used with topic_event_map, any events not captured in the map will be sent to this topic. | cgnat.events |
 | topic_event_map | Used to map specific events (eg. `session-mapping`) to a specific topic. |
 | key_field | Checks if field exist in the metric, and sets the key for the produced event. Typical options are `x_ip`, `x_port`, `src_ip`, `dst_ip` and `dst_port`. |
 | producer_extra_config | Extra configuration to pass into the Kafka Producer (eg. SSL configuration). |
@@ -96,14 +96,42 @@ outputs:
         password: example
 ```
 
-| Name | Description |
+| Name | Description | Default Value |
 | --- | --- |
 | host | Redis Host. |
-| port | Redis Port. |
+| port | Redis Port. | 6379 |
 | key_field | Field to use in the redis key. |
 | key_ttl | Sets expiration for the key. |
 | key_event_map | Used to prepend to the key for specific events (eg. `session-mapping`), by default: `cgnat:events:<event_type>:<key_field>`. |
 | redis_extra_config | Extra config to pass into the Redis class. Eg. Auth/TLS/etc |
+
+### AMQP
+
+AMQP Producer Output allows you to interact with servers implementing the AMQP protocol, for example like RabbitMQ.
+
+```yaml
+outputs:
+  - type: "AMQPOutput"
+    options:
+      host: "10.4.21.133"
+      port: 5672
+      username: cgnec
+      password: cgnec
+```
+
+| Name | Description | Default Value |
+| --- | --- | --- |
+| host | AMQP Host. |
+| port | AMQP Port. | 5672 |
+| virtual_host | AMQP Virtual Host. |
+| username | AMQP userid (for authentication). |
+| password | AMQP password (for authentication). |
+| exchange | Exchange to use. | cgnat.events |
+| exchange_type | Exchange Type on the server. | topic |
+| routing_key | Routing key to add to the messages. | Uses the `routing_key_event_map` to separate messages by routing keys |
+| default_routing_key | Any NAT event that doesn't match the `routing_key_event_map` will have this routing key assigned. |
+| routing_key_event_map | Used to attach routing keys to the different event types (`NATEventEnum`) |
+| connection_extra_config | Extra config passed into `Connection` class. |
 
 ## Preprocessors
 
