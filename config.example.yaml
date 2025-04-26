@@ -3,6 +3,8 @@ kafka_bootstrap_servers: "kafka:9092"
 kafka_group_id: "syslog-consumers"
 kafka_max_records_poll: 500
 batch_size: 30000
+processes: 8
+metrics_port: 4499
 
 # Handler Configuration
 handler:

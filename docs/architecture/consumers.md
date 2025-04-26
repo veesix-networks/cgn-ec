@@ -18,6 +18,8 @@ kafka_bootstrap_servers: "localhost:9094"
 kafka_group_id: "syslog-consumers"
 kafka_max_records_poll: 500
 batch_size: 30000
+processes: 8
+metrics_port: 4499
 
 # Handler Configuration
 handler:
@@ -73,7 +75,8 @@ outputs:
   "kafka_group_id": "syslog-consumers",
   "kafka_max_records_poll": 500,
   "batch_size": 30000,
-  
+  "processes": 8,
+  "metrics_port": 4499,
   "handler": {
     "type": "cgn_ec_consumer.handlers.nfware.NFWareSyslogHandler",
     "options": {}
@@ -129,6 +132,8 @@ outputs:
 | kafka_bootstrap_servers     | Kafka Server for consuming all events |
 | kafka_group_id              | ID for the consumer group             |
 | kafka_max_records_poll      | How many records are pulled           |
+| processes                   | How many processes to run within the single container |
+| metrics_port                | What port to expose the Prometheus Python Client Exporter data on |
 | config_file                 | Only set outside the configuration to reference config file path    |
 | batch_size                  | TimeScaleDB Batch insert size         |
 | handler.type                | Handler class for processing events   |
