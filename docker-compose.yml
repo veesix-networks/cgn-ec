@@ -10,14 +10,11 @@ services:
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
 
   syslog_collector:
-    image: balabit/syslog-ng:4.8.0
+    image: veesixnetworks/cgn-ec-producer-syslog:v1.0.0
     ports:
       - 1514:1514/udp
     networks:
       - kafka
-    volumes:
-      - "./producer/syslog/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf"
-      - "./producer/syslog/cgn-ec.conf.d:/etc/syslog-ng/cgn-ec.conf.d"
     profiles: [syslog]
 
   netflow_collector:

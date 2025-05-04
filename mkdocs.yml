@@ -45,7 +45,6 @@ nav:
   - Architecture:
     - General Design: architecture/general_design.md
     - Extra Diagrams: architecture/further_look.md
-    - Collectors (Producers): architecture/collectors.md
     - Preprocessors: architecture/preprocessors.md
     - Consumers: architecture/consumers.md
     - Handlers: architecture/handlers.md
@@ -53,6 +52,10 @@ nav:
     - Kafka: architecture/message_queue.md
     - TimescaleDB Models: architecture/timescale_models.md
     - API Hooks: architecture/api_hooks.md
+    - Collectors (Producers):
+      - Syslog: architecture/producers/syslog.md
+      - Netflow: architecture/producers/netflow.md
+      - RADIUS accounting: architecture/producers/radius_accounting.md
   - API & SDKs: 
     - API: api/index.md
     - Python SDK: api/python_sdk.md
