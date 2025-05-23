@@ -14,7 +14,7 @@ CREATE TABLE address_mapping (
         timestamp TIMESTAMPTZ NOT NULL,
         host INET NOT NULL,
         event SMALLINT NOT NULL, 
-        vrf_id SMALLINT, 
+        vrf_id VARCHAR, 
         src_ip INET NOT NULL, 
         x_ip INET NOT NULL
 );
@@ -23,7 +23,7 @@ CREATE TABLE port_block_mapping (
         timestamp TIMESTAMPTZ NOT NULL, 
         host INET NOT NULL,
         event SMALLINT NOT NULL, 
-        vrf_id SMALLINT, 
+        vrf_id VARCHAR, 
         src_ip INET NOT NULL, 
         x_ip INET NOT NULL, 
         start_port INTEGER NOT NULL, 
@@ -34,7 +34,7 @@ CREATE TABLE port_mapping (
         timestamp TIMESTAMPTZ NOT NULL,
         host INET NOT NULL,
         event SMALLINT NOT NULL, 
-        vrf_id SMALLINT, 
+        vrf_id VARCHAR, 
         protocol SMALLINT NOT NULL, 
         src_ip INET NOT NULL, 
         src_port INTEGER, 
@@ -46,7 +46,7 @@ CREATE TABLE session_mapping (
         timestamp TIMESTAMPTZ NOT NULL,
         host INET NOT NULL,
         event INTEGER NOT NULL, 
-        vrf_id SMALLINT, 
+        vrf_id VARCHAR, 
         protocol SMALLINT, 
         src_ip INET NOT NULL, 
         src_port INTEGER NOT NULL, 
@@ -54,7 +54,6 @@ CREATE TABLE session_mapping (
         x_port INTEGER, 
         dst_ip INET NOT NULL, 
         dst_port INTEGER NOT NULL, 
-        direction TEXT
 );
 
 SELECT create_hypertable('session_mapping', by_range('timestamp', INTERVAL '1 hour'));

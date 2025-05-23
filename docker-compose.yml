@@ -10,7 +10,11 @@ services:
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
 
   syslog_collector:
-    image: veesixnetworks/cgn-ec-producer-syslog:v1.0.0
+    image: veesixnetworks/cgn-ec-producer-syslog:v1.2.1
+    environment:
+      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
+    volumes:
+      - ./syslog.yaml:/etc/cgn_ec/syslog.yaml
     ports:
       - 1514:1514/udp
     networks:
@@ -127,7 +131,7 @@ services:
       - 9308:9308
 
   api:
-    image: veesixnetworks/cgn-ec-api:v0.4.0
+    image: veesixnetworks/cgn-ec-api:v0.5.0
     ports:
       - 3001:80
     networks:
