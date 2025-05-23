@@ -53,7 +53,7 @@ CREATE TABLE session_mapping (
         x_ip INET, 
         x_port INTEGER, 
         dst_ip INET NOT NULL, 
-        dst_port INTEGER NOT NULL, 
+        dst_port INTEGER NOT NULL
 );
 
 SELECT create_hypertable('session_mapping', by_range('timestamp', INTERVAL '1 hour'));
