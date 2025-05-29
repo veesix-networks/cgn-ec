@@ -10,7 +10,7 @@ services:
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
 
   syslog_collector:
-    image: veesixnetworks/cgn-ec-producer-syslog:v1.2.1
+    image: veesixnetworks/cgn-ec-producer-syslog:v1.2.2
     environment:
       - KAFKA_BOOTSTRAP_SERVER=kafka:9092
     volumes:
