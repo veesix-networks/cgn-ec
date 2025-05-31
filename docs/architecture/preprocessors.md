@@ -89,3 +89,69 @@ Filters metrics that have a specific key. By default, if the key value is `None`
           key: dst_port
           ignore_none: true
 ```
+
+### exclude_by_kv
+
+Excludes metrics that only match the specific key/value pair.
+
+```yaml title="config.yaml" hl_lines="9-13"
+  # Example HTTP Output
+  outputs:
+  - type: "HTTPWebhookOutput"
+    options:
+      url: "http://10.4.21.133:3013/test"
+      headers:
+        x-api-key: default-change-me
+      timeout: 10
+    preprocessors:
+      - name: exclude_by_kv
+        arguments:
+          key: dst_ip
+          value: 8.8.8.8
+```
+
+### exclude_by_kvs
+
+Like `exclude_by_kv`, but allows you to match multiple key/value pairs.
+
+```yaml title="config.yaml" hl_lines="9-14"
+  # Example HTTP Output
+  outputs:
+  - type: "HTTPWebhookOutput"
+    options:
+      url: "http://10.4.21.133:3013/test"
+      headers:
+        x-api-key: default-change-me
+      timeout: 10
+    preprocessors:
+      - name: exclude_by_kvs
+        arguments:
+          kvs:
+            dst_ip: 8.8.8.8
+            dst_port: 53
+```
+
+### exclude_by_kv_values
+
+Like `exclude_by_kv`, but allows you to match multiple values for a single key.
+
+```yaml title="config.yaml" hl_lines="9-18"
+  # Example HTTP Output
+  outputs:
+  - type: "HTTPWebhookOutput"
+    options:
+      url: "http://10.4.21.133:3013/test"
+      headers:
+        x-api-key: default-change-me
+      timeout: 10
+    preprocessors:
+      - name: exclude_by_kv_values
+        arguments:
+          key: dst_ip
+          values:
+            - 1.1.1.1
+            - 8.8.8.8
+            - 8.8.4.4
+            - 208.67.222.222
+            - 9.9.9.9
+```
