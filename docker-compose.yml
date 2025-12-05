@@ -131,7 +131,7 @@ services:
       - 9308:9308
 
   api:
-    image: veesixnetworks/cgn-ec-api:v1.0.0
+    image: veesixnetworks/cgn-ec-api:v1.1.0
     ports:
       - 3001:80
     networks:
