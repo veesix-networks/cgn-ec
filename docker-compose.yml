@@ -35,7 +35,7 @@ services:
     profiles: [netflow]
 
   kafka:
-    image: docker.io/bitnami/kafka:3.9
+    image: docker.io/bitnamilegacy/kafka:3.9
     ports:
       - 9094:9094
     volumes:
